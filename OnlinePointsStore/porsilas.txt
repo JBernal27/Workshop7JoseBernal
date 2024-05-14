@@ -1,0 +1,121 @@
+import { PhysicalProduct, DigitalProduct } from './products.js'
+import {User, Admin} from './person.js'
+import GP from '../generalPurpose.js'
+
+const adminUsers = []
+const clientUsers = []
+let actualUser 
+
+const token = new DigitalProduct("Riwi token",25,3,3,"riwi.com/token")
+
+//Clase Activity
+
+function Activity(tipe,grantedPoints){
+    this.tipe = tipe
+    this.grantedPoints = grantedPoints
+}
+
+Activity.prototype.completeActivity = function(){
+    impInf("Actividad Realizada con exito")
+    return(this.grantedPoints)
+}
+
+const actividad1 = new Activity(1,30)
+
+//Clase Activity
+
+//Clase ProductCategory
+
+function ProductCategory(categoryName,categoryDescription){
+    this.categoryName = categoryName
+    this.categoryDescription = categoryDescription
+}
+
+ProductCategory.prototype.productList= function(){
+    //Recorrer lista de productos y extraer los que tengan esta categoria
+}
+
+//Clase ProductCategory
+
+//Clase ExchangeOrder
+
+
+function ExchangeOrder(user,product,exchangeDate){
+    this.user = user
+    this.product = product
+    this.exchangeDate = exchangeDate
+}
+
+ExchangeOrder.prototype.confirmExchangeOrder = function(){
+    //Confirmar orden de cancje
+    impInf("El canje fue realizado correctamente")
+}
+
+ExchangeOrder.prototype.confirmExchangeOrder = function(){
+    //Confirmar orden de cancje
+    impInf("El canje no fue realizado con exito")
+}
+
+//Clase ExchangeOrder
+
+//RECORDAR CAMBIAR EL TITULO DE CANJE
+
+const clientMenu = () =>{
+    let op = numberInput("Ingrese una opcion:\n 1. Realizar actividad\n 2. Redimir puntos\n 0.Salir")
+    switch (op) {
+        case 1:
+           actualUser.acumulatePoints(actividad1.completeActivity())
+        break;
+        case 2:
+            actualUser.reedemPoints(numberInput(`Cuantos Puntos deseas redimir? (Tienes ${actualUser.acumulatedPoints})`))
+        break;
+        case 0:
+            return false
+        break;
+        default:
+            impErr("Ingrese una opcion valida")
+        break;
+    }
+
+    return true
+}
+
+const menu = () =>{
+    let op = numberInput(`Ingrese una opcion:\n 1. Iniciar Sesion como Cliente 2. Iniciar Sesion como Administrador\n 0. Salir del programa`)
+
+    switch (op) {
+        case 1:
+            let userToCompare = textInput("Ingrese su usuario")
+            let user = clientUsers.find(clientUser => clientUser.name == userToCompare);
+            console.log(user);
+            if(user){
+                console.log(user.pass)
+                let password = textInput("Ingrese la contraseña");
+                console.log(password)
+                if(user.pass == password){
+                    impInf("Sesion Iniciada Correctamente")
+                    actualUser = user
+                    while(clientMenu()){}
+                }else{
+                    impErr("Contraseña incorrecta")
+                }
+            }else{
+                impErr("Usuario invalido")
+            }
+        break;
+        
+        case 0:
+            return false
+        break;
+    
+        default:
+            impErr("Ingrese una opcion valida")
+        break;
+    }
+
+    return true
+}
+while(menu()){}
+
+////////////////////////////////////////////////////////////////////////////////////
+
